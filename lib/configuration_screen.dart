@@ -24,6 +24,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   String infoText() {
     return AppSherdDb().cloudReadReader();
   }
+  
  
   @override
   Widget build(BuildContext context) {
