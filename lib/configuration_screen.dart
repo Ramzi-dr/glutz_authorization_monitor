@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:glutz_authorization_monitor/home_screen.dart';
 import 'app_db.dart';
 import 'glutzServer/rpc_server.dart';
 import 'widget/info_card.dart';
 import 'widget/style.dart';
 import 'widget/textField_deco.dart';
 import 'widget/widget_method.dart';
-import 'package:provider/provider.dart';
-
 
 class ConfigurationScreen extends StatefulWidget {
   static const id = '/configurationScreen';
   @override
   State<ConfigurationScreen> createState() => _ConfigurationScreenState();
 }
-
 
 class _ConfigurationScreenState extends State<ConfigurationScreen> {
   final TextEditingController _readerController = TextEditingController();
@@ -24,8 +20,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   String infoText() {
     return AppSherdDb().cloudReadReader();
   }
-  
- 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,11 +29,13 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
-            bottomNavigationBar: Method.bottomBar((int index, ) {
-      setState(() {
-    Method.selectedIndex = index;
-      });Navigator.pushNamed(context, '/homeScreen');
-    },'Home',Icons.home),
+            bottomNavigationBar: Method.bottomBar((
+              int index,
+            ) {
+              setState(() {
+                Method.selectedIndex = index;
+              });
+            }, 'Home', Icons.home, '/homeScreen', this.context),
             resizeToAvoidBottomInset: true,
             appBar: Method.appBar(),
             backgroundColor: Style.appBackgroudColor(),

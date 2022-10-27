@@ -3,14 +3,14 @@ import 'package:glutz_authorization_monitor/configuration_screen.dart';
 import 'package:glutz_authorization_monitor/widget/style.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const id = '/homeScreen';
+class EmailScreen extends StatefulWidget {
+  static const id = '/emailScreen';
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<EmailScreen> createState() => _EmailScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _EmailScreenState extends State<EmailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +20,16 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           Method.selectedIndex = index;
         });
-        
-      }, 'Config', Icons.settings,'/configurationScreen', this.context),
+      }, 'Home', Icons.home, ('/homeScreen'), this.context),
       resizeToAvoidBottomInset: true,
       appBar: Method.appBar(),
       backgroundColor: Style.appBackgroudColor(),
-      body: Container(color: Colors.greenAccent),
+      body: Scaffold(
+          body: Container(
+              color: Colors.yellow,
+              child: Center(
+                child: Text('email Screeen'),
+              ))),
     );
   }
 }

@@ -3,14 +3,14 @@ import 'package:glutz_authorization_monitor/configuration_screen.dart';
 import 'package:glutz_authorization_monitor/widget/style.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const id = '/homeScreen';
+class CallScreen extends StatefulWidget {
+  static const id = '/callScreen';
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CallScreen> createState() => _CallScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CallScreenState extends State<CallScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ) {
         setState(() {
           Method.selectedIndex = index;
+          
         });
-        
-      }, 'Config', Icons.settings,'/configurationScreen', this.context),
+      }, 'Home', Icons.home, ('/homeScreen'), this.context),
       resizeToAvoidBottomInset: true,
       appBar: Method.appBar(),
       backgroundColor: Style.appBackgroudColor(),
-      body: Container(color: Colors.greenAccent),
+      body: Scaffold(
+          body: Container(
+              child: Center(
+                child: Text('call Screen'),
+              ),
+              color: Colors.redAccent)),
     );
   }
 }

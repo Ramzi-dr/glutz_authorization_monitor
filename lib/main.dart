@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/configuration_screen.dart';
 import 'package:glutz_authorization_monitor/hold_screen.dart';
+import 'package:glutz_authorization_monitor/email_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
+import 'call_screen.dart';
 import 'home_screen.dart';
 
 void main() async {
@@ -27,9 +29,11 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: ('/'),
           routes: {
-            '/':(context) => HoldScreen(),
+            '/': (context) => const HoldScreen(),
             '/configurationScreen': (context) => ConfigurationScreen(),
             '/homeScreen': (context) => HomeScreen(),
+            '/emailScreen': (context) => EmailScreen(),
+            '/callScreen': (context) => CallScreen(),
           }),
     );
   }

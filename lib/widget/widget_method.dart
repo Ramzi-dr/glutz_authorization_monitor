@@ -6,31 +6,42 @@ class Method {
         automaticallyImplyLeading: false,
         title: const Center(
             child: Text(
-          'BST Door Authorization Monitor',
+          'Covid Monitor',
           style: TextStyle(fontSize: 30),
         )),
         flexibleSpace: gradientColor());
   }
 
-  static int selectedIndex = 0;
+  static int selectedIndex = 1;
 
-  static BottomNavigationBar bottomBar(onTap,label, icon) {
-    return BottomNavigationBar(
-      onTap: onTap,
+  static BottomNavigationBar bottomBar(
+      onTap, label, icon, screenToGo, context) {
+    return BottomNavigationBar(elevation: 6,
       currentIndex: selectedIndex,
       backgroundColor: const Color.fromARGB(95, 64, 255, 179),
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: GestureDetector(child: Icon(Icons.call)),
-          label: 'Bst Calls',
+          icon: GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/callScreen'),
+            child: const Icon(Icons.call),
+          ),
+          label: 'Bst Call',
         ),
         BottomNavigationBarItem(
-          icon: GestureDetector(child: Icon(icon)),
+          icon: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, screenToGo);
+              },
+              child: Icon(icon)),
           label: label,
         ),
         BottomNavigationBarItem(
-          icon: GestureDetector(child: Icon(Icons.chat)),
-          label: 'Bst Chats',
+          icon: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/emailScreen');
+              },
+              child: const Icon(Icons.email)),
+          label: 'Bst Email',
         ),
       ],
     );
