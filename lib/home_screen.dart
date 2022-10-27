@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     },'Config',Icons.settings),
       resizeToAvoidBottomInset: true,
       appBar: Method.appBar(),
-      backgroundColor: Style.appBackgroudColor(),
+      backgroundColor: Style.appBackgroudColor(),body: Container(color: Colors.red),
     );
   }
   
