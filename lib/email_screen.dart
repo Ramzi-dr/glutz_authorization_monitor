@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/configuration_screen.dart';
+import 'package:glutz_authorization_monitor/widget/bottom_navigation_bar.dart';
 import 'package:glutz_authorization_monitor/widget/style.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 
@@ -11,16 +12,30 @@ class EmailScreen extends StatefulWidget {
 }
 
 class _EmailScreenState extends State<EmailScreen> {
+  changeIndex() {
+    (int index) {
+      setState(() {
+        BottomBar.currentIndex = index;
+      });
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Method.bottomBar((
-        int index,
-      ) {
-        setState(() {
-          Method.selectedIndex = index;
-        });
-      }, 'Home', Icons.home, ('/homeScreen'), this.context),
+      bottomNavigationBar: BottomBar(
+              changeIndex,
+              context,
+              '/configurationScreen',
+              '/homeScreen',
+              '/callScreen',
+              Icons.settings,
+              Icons.home,
+              Icons.call,
+              'Config',
+              'Home',
+              'BST Call')
+          .bottomBar(),
       resizeToAvoidBottomInset: true,
       appBar: Method.appBar(),
       backgroundColor: Style.appBackgroudColor(),

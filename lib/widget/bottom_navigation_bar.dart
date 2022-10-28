@@ -36,8 +36,7 @@ class BottomBar {
       onTap: (value) {
         onTap;
         print('value: $value');
-        print('ontap: $onTap');
-        Navigator.pushNamed(context, pageList[currentIndex]);
+        Navigator.pushNamed(context, pageList[value]);
       },
       currentIndex: currentIndex,
       backgroundColor: const Color.fromARGB(95, 64, 255, 179),

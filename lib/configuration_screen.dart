@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/widget/bottom_navigation_bar.dart';
 import 'app_db.dart';
@@ -24,7 +22,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     return AppSherdDb().cloudReadReader();
   }
 
-   changeIndex() {
+  changeIndex() {
     (int index) {
       setState(() {
         BottomBar.currentIndex = index;
@@ -40,8 +38,19 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
-            bottomNavigationBar: BottomBar(changeIndex(), context, '/callScreen', '/homeScreen',
-   '/emailScreen', Icons.call, Icons.home, Icons.email, 'labelOne', 'labelTwo', 'labelThree').bottomBar(),
+            bottomNavigationBar: BottomBar(
+                    changeIndex,
+                    context,
+                    '/callScreen',
+                    '/homeScreen',
+                    '/emailScreen',
+                    Icons.call,
+                    Icons.home,
+                    Icons.email,
+                    'BST Call',
+                    'Home',
+                    'BST Email')
+                .bottomBar(),
             resizeToAvoidBottomInset: true,
             appBar: Method.appBar(),
             backgroundColor: Style.appBackgroudColor(),
