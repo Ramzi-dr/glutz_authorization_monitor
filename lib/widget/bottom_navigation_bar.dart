@@ -15,8 +15,6 @@ class BottomBar {
 
   late final pageList = [screenOne, screenTwo, screenThree];
   static int currentIndex = 1;
-  static int selected
-  
 
   BottomBar(
     this.onTap,

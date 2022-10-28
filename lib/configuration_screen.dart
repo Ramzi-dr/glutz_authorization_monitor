@@ -27,7 +27,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
    changeIndex() {
     (int index) {
       setState(() {
-        BottomBar.selectedIndex = index;
+        BottomBar.currentIndex = index;
       });
     };
   }
