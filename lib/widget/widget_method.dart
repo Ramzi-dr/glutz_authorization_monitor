@@ -14,38 +14,7 @@ class Method {
 
   static int selectedIndex = 1;
 
-  static BottomNavigationBar bottomBar(
-      onTap, label, icon, screenToGo, context) {
-    return BottomNavigationBar(elevation: 6,
-      currentIndex: selectedIndex,
-      backgroundColor: const Color.fromARGB(95, 64, 255, 179),
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/callScreen'),
-            child: const Icon(Icons.call),
-          ),
-          label: 'Bst Call',
-        ),
-        BottomNavigationBarItem(
-          icon: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, screenToGo);
-              },
-              child: Icon(icon)),
-          label: label,
-        ),
-        BottomNavigationBarItem(
-          icon: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/emailScreen');
-              },
-              child: const Icon(Icons.email)),
-          label: 'Bst Email',
-        ),
-      ],
-    );
-  }
+
 
   // ignore: non_constant_identifier_names
   Future<dynamic> EntryDialog(BuildContext context,

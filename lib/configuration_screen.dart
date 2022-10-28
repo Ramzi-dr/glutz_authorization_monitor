@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:glutz_authorization_monitor/widget/bottom_navigation_bar.dart';
 import 'app_db.dart';
 import 'glutzServer/rpc_server.dart';
 import 'widget/info_card.dart';
@@ -20,6 +23,15 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   String infoText() {
     return AppSherdDb().cloudReadReader();
   }
+   changeIndex(int index){
+     setState(() {
+                Method.selectedIndex = index;
+              });
+  
+  final bottomBar = BottomBar(changeIndex(BottomBar.currentIndex), context, '/callScreen', '/homeScreen',
+   '/emailScreen', Icons.call, Icons.home, Icons.email, 'labelOne', 'labelTwo', 'labelThree');
+  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +41,10 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
-            bottomNavigationBar: Method.bottomBar((
+            bottomNavigationBar: 
               int index,
             ) {
-              setState(() {
-                Method.selectedIndex = index;
-              });
+             
             }, 'Home', Icons.home, '/homeScreen', this.context),
             resizeToAvoidBottomInset: true,
             appBar: Method.appBar(),
