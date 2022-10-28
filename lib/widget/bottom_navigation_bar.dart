@@ -35,7 +35,6 @@ class BottomBar {
       elevation: 6,
       onTap: (value) {
         onTap;
-        print('value: $value');
         Navigator.pushNamed(context, pageList[value]);
       },
       currentIndex: currentIndex,
