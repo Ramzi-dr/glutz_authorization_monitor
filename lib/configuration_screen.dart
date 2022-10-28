@@ -23,14 +23,13 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   String infoText() {
     return AppSherdDb().cloudReadReader();
   }
-   changeIndex(int index){
-     setState(() {
-                Method.selectedIndex = index;
-              });
-  
-  final bottomBar = BottomBar(changeIndex(BottomBar.currentIndex), context, '/callScreen', '/homeScreen',
-   '/emailScreen', Icons.call, Icons.home, Icons.email, 'labelOne', 'labelTwo', 'labelThree');
-  
+
+   changeIndex() {
+    (int index) {
+      setState(() {
+        BottomBar.selectedIndex = index;
+      });
+    };
   }
 
   @override
@@ -41,11 +40,8 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
-            bottomNavigationBar: 
-              int index,
-            ) {
-             
-            }, 'Home', Icons.home, '/homeScreen', this.context),
+            bottomNavigationBar: BottomBar(changeIndex(), context, '/callScreen', '/homeScreen',
+   '/emailScreen', Icons.call, Icons.home, Icons.email, 'labelOne', 'labelTwo', 'labelThree').bottomBar(),
             resizeToAvoidBottomInset: true,
             appBar: Method.appBar(),
             backgroundColor: Style.appBackgroudColor(),

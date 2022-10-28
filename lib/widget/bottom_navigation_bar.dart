@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class BottomBar {
-  final int selectedIndex;
   final String screenOne;
   final String screenTwo;
   final String screenThree;
@@ -13,14 +12,15 @@ class BottomBar {
   final String labelThree;
   final Function onTap;
   final BuildContext context;
-  
+
   late final pageList = [screenOne, screenTwo, screenThree];
   static int currentIndex = 1;
+  static int selected
+  
 
   BottomBar(
     this.onTap,
     this.context,
-    this.selectedIndex,
     this.screenOne,
     this.screenTwo,
     this.screenThree,
@@ -39,9 +39,9 @@ class BottomBar {
         onTap;
         print('value: $value');
         print('ontap: $onTap');
-        Navigator.pushNamed(context, pageList[selectedIndex]);
+        Navigator.pushNamed(context, pageList[currentIndex]);
       },
-      currentIndex: selectedIndex,
+      currentIndex: currentIndex,
       backgroundColor: const Color.fromARGB(95, 64, 255, 179),
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
