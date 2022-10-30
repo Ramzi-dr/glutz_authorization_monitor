@@ -17,7 +17,7 @@ class Method {
 
 
   // ignore: non_constant_identifier_names
-  Future<dynamic> EntryDialog(BuildContext context,
+  static Future<dynamic> EntryDialog(BuildContext context,
       {title = 'Es ist ein Fehler aufgetreten',
       text = 'Bitte versuchen Sie es erneut'}) {
     return showDialog(

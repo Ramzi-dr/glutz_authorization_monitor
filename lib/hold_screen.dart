@@ -14,7 +14,10 @@ class HoldScreen extends StatefulWidget {
 class _HoldScreenState extends State<HoldScreen> {
   @override
   Widget build(BuildContext context) {
-    if (!AppSherdDb().valueCheck('reader')) {
+    if (!AppSherdDb().dbCheckValue('reader') ||
+        !AppSherdDb().dbCheckValue('userName')||
+        !AppSherdDb().dbCheckValue('userPass')||
+        !AppSherdDb().dbCheckValue('serverUrl')) {
       return ConfigurationScreen();
     } else {
       return HomeScreen();

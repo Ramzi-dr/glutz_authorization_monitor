@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:json_rpc_client/json_rpc_client.dart';
 import 'rpc_collection.dart';
+import 'dart:convert';
 
 const demoUrl = 'http://admin:admin@31.24.10.138:8332/rpc/';
 
 class RpcServer extends ChangeNotifier {
-  
   final client = JRPCHttpClient(Uri.parse(demoUrl));
   static const id = '/';
   String deviceLabel = '';
@@ -13,20 +14,33 @@ class RpcServer extends ChangeNotifier {
   String userLabel = '';
   String badgeId = '';
 
-  Future<void> getDeviceIdByDeviceLabel(userEnteredDeviceLabel) async {
+  Future getDevicesInfo() async {
+    Object? myValue;
     try {
-      final res = await client.callRPCv2(JRPC2Request(
+      await client
+          .callRPCv2(JRPC2Request(
         id: client.nextId,
         method: RpcCollection.getModel,
         params: RpcCollection.params,
-      ));
-      final List response = res.result as List;
-      for (var result in response) {
-        print(result);
-      }
+      ))
+          .then((value) {
+        myValue = value.result;
+        return value.result;
+      });
+      return myValue;
     } on Exception catch (e) {
       print(e);
       // TODOdd
+    }
+  }
+
+  getReaderLabel(userGivenText) async {
+    print(userGivenText);
+    for (var readers in await getDevicesInfo() as List) {
+      if (readers['label'] == userGivenText) {
+        print(true);
+      }
+      ;
     }
   }
 }

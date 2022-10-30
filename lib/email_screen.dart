@@ -43,7 +43,7 @@ class _EmailScreenState extends State<EmailScreen> {
           body: Container(
               color: Colors.yellow,
               child: Center(
-                child: Text('email Screeen'),
+                child: Text('email Screen'),
               ))),
     );
   }

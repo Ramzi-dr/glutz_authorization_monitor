@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/widget/bottom_navigation_bar.dart';
+import 'package:glutz_authorization_monitor/widget/text_field.dart';
+import 'package:provider/provider.dart';
 import 'app_db.dart';
 import 'glutzServer/rpc_server.dart';
 import 'widget/info_card.dart';
@@ -15,11 +17,12 @@ class ConfigurationScreen extends StatefulWidget {
 
 class _ConfigurationScreenState extends State<ConfigurationScreen> {
   final TextEditingController _readerController = TextEditingController();
-  final TextEditingController _confirmedReaderController =
-      TextEditingController();
   final TextEditingController _rpcServerUrlController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _userPassController = TextEditingController();
+
   String infoText() {
-    return AppSherdDb().cloudReadReader();
+    return AppSherdDb().dbSearchData('reader');
   }
 
   changeIndex() {
@@ -55,7 +58,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
             appBar: Method.appBar(),
             backgroundColor: Style.appBackgroudColor(),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 70.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Center(
                 child: SingleChildScrollView(
                   child: Column(
@@ -70,36 +73,32 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFormField(
-                          controller: _readerController,
-                          onChanged: ((value) {}),
+                        MyTextField(
+                            controller: _readerController,
+                            textLabel: 'Access Point Name',
+                            obscureText: false),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        MyTextField(
+                            controller: _userNameController,
+                            textLabel: 'Server User',
+                            obscureText: false),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        MyTextField(
+                          controller: _userPassController,
+                          textLabel: 'user Pass',
                           obscureText: false,
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          decoration: TextFieldDecoration(
-                              'Name des Autorisierungspunkts'),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFormField(
-                            controller: _confirmedReaderController,
-                            onChanged: ((value) {}),
-                            obscureText: false,
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            decoration:
-                                TextFieldDecoration('Namen bestätigen')),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
+                        MyTextField(
                             controller: _rpcServerUrlController,
-                            onChanged: ((value) {}),
-                            obscureText: false,
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            decoration: TextFieldDecoration('Rpc Server Url')),
+                            textLabel: 'Rpc Server Url',
+                            obscureText: false),
                         const SizedBox(
                           height: 20,
                         ),
@@ -118,16 +117,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   textStyle: const TextStyle(fontSize: 20),
                                 ),
                                 onPressed: () {
-                                  if (_confirmedReaderController.text ==
-                                          _readerController.text &&
-                                      _confirmedReaderController.text.length >
-                                          2) {
-                                    RpcServer().getDeviceIdByDeviceLabel(
-                                        _readerController.text);
-                                    readerLabelConfig(context);
-                                  } else {
-                                    Method().EntryDialog(context);
-                                  }
+                                   RpcServer().getReaderLabel(_readerController.text);
                                 },
                                 child: const Text('Senden'),
                               ),
@@ -145,9 +135,8 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   }
 
   void readerLabelConfig(BuildContext context) {
-    AppSherdDb().readerCreate(_confirmedReaderController.text);
+    AppSherdDb().dbCreateReader(_readerController.text);
     _readerController.clear();
-    _confirmedReaderController.clear();
     setState(() {
       infoText();
     });

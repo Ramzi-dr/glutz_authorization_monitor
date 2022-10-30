@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/configuration_screen.dart';
+import 'package:glutz_authorization_monitor/glutzServer/rpc_server.dart';
 import 'package:glutz_authorization_monitor/hold_screen.dart';
 import 'package:glutz_authorization_monitor/email_screen.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,6 @@ import 'home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSherdDb().init();
-  AppSherdDb().cloudReadReader();
   runApp(const MyApp());
 }
 
@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AppSherdDb(),
-        )
+        ),ChangeNotifierProvider(
+          create: (_) => RpcServer(),
+        ),
         // ignore: prefer_const_constructors
       ],
       child: MaterialApp(

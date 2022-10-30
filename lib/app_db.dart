@@ -3,34 +3,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSherdDb with ChangeNotifier {
   static late SharedPreferences prefs;
-  String reader = '';
-  bool codeExist = false;
-  String newCloudAddress = '';
-  String newCloudKey = '';
+
   Future init() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  bool valueCheck(value) {
+  bool dbCheckValue(value) {
     return prefs.containsKey(value);
   }
 
-  readerCreate(reader) async {
+  dbCreateReader(reader) async {
     await prefs.setString('reader', reader);
   }
 
-  codeDelete() {}
-
-  cloudCreateAddress(cloudLink) async {
-    await prefs.setString('cloudAddress', cloudLink);
-    newCloudAddress = cloudLink;
-    notifyListeners();
+  dbCreateUserName(userName) async {
+    await prefs.setString('userName', userName);
+  }
+  dbCreateUserPass(userPass) async {
+    await prefs.setString('userPass', userPass);
+  }
+  dbCreateServerUrl(serverUrl) async {
+    await prefs.setString('serverUrl', serverUrl);
   }
 
-  String cloudReadReader() {
-    newCloudAddress = prefs.getString('reader') ?? '';
-    reader = prefs.getString('reader')??'';
-    notifyListeners();
-    return  prefs.getString('reader') ?? '';
+  String dbSearchData(dataToSearch) {
+    return prefs.getString(dataToSearch) ?? '';
   }
 }
