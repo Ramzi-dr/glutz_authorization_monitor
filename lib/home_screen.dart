@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   changeIndex() {
     (int index) {
-      print('index: $index');
       setState(() {
         BottomBar.currentIndex = index;
       });
@@ -40,7 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: true,
       appBar: Method.appBar(),
       backgroundColor: Style.appBackgroudColor(),
-      body: Container(color: Colors.greenAccent),
+      body: Container(
+        color: Colors.greenAccent,
+        child: const Center(
+            child: IconButton(
+          onPressed: null,
+          icon: Icon(Icons.home),
+          iconSize: 200,
+        )),
+      ),
     );
   }
 }

@@ -41,10 +41,14 @@ class _EmailScreenState extends State<EmailScreen> {
       backgroundColor: Style.appBackgroudColor(),
       body: Scaffold(
           body: Container(
-              color: Colors.yellow,
-              child: Center(
-                child: Text('email Screen'),
-              ))),
+        color: Colors.yellow,
+        child: const Center(
+            child: IconButton(
+          onPressed: null,
+          icon: Icon(Icons.email),
+          iconSize: 200,
+        )),
+      )),
     );
   }
 }

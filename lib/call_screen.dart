@@ -41,10 +41,13 @@ class _CallScreenState extends State<CallScreen> {
       backgroundColor: Style.appBackgroudColor(),
       body: Scaffold(
           body: Container(
-              child: Center(
-                child: Text('call Screen'),
-              ),
-              color: Colors.redAccent)),
+              color: Colors.redAccent,
+              child: const Center(
+                  child: IconButton(
+                onPressed: null,
+                icon: Icon(Icons.call),
+                iconSize: 200,
+              )))),
     );
   }
 }

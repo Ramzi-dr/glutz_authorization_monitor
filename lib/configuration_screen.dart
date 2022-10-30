@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/widget/bottom_navigation_bar.dart';
 import 'package:glutz_authorization_monitor/widget/text_field.dart';
-import 'package:provider/provider.dart';
 import 'app_db.dart';
 import 'glutzServer/rpc_server.dart';
 import 'widget/info_card.dart';
 import 'widget/style.dart';
-import 'widget/textField_deco.dart';
 import 'widget/widget_method.dart';
 
 class ConfigurationScreen extends StatefulWidget {
   static const id = '/configurationScreen';
+
+  const ConfigurationScreen({super.key});
   @override
   State<ConfigurationScreen> createState() => _ConfigurationScreenState();
 }
 
 class _ConfigurationScreenState extends State<ConfigurationScreen> {
   final TextEditingController _readerController = TextEditingController();
-  final TextEditingController _rpcServerUrlController = TextEditingController();
+  final TextEditingController _serverUrlController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userPassController = TextEditingController();
 
-  String infoText() {
+  String serverUrlText() {
+    return AppSherdDb().dbSearchData('serverUrl');
+  }
+
+  String readerText() {
     return AppSherdDb().dbSearchData('reader');
   }
 
@@ -65,10 +69,11 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: infoText().length < 5
-                              ? MediaQuery.of(context).size.width / 4
-                              : MediaQuery.of(context).size.width / 1.5,
-                          child: InfoCardWidget(text: infoText()),
+                          width: MediaQuery.of(context).size.width / 1.25,
+                          child: InfoCardWidget(
+                            serverUrlText: serverUrlText(),
+                            readerText: readerText(),
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -82,22 +87,22 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                         ),
                         MyTextField(
                             controller: _userNameController,
-                            textLabel: 'Server User',
+                            textLabel: 'User Name',
                             obscureText: false),
                         const SizedBox(
                           height: 20,
                         ),
                         MyTextField(
                           controller: _userPassController,
-                          textLabel: 'user Pass',
+                          textLabel: 'User Pass',
                           obscureText: false,
                         ),
                         const SizedBox(
                           height: 20,
                         ),
                         MyTextField(
-                            controller: _rpcServerUrlController,
-                            textLabel: 'Rpc Server Url',
+                            controller: _serverUrlController,
+                            textLabel: 'Server Url',
                             obscureText: false),
                         const SizedBox(
                           height: 20,
@@ -117,7 +122,28 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   textStyle: const TextStyle(fontSize: 20),
                                 ),
                                 onPressed: () {
-                                   RpcServer().getReaderLabel(_readerController.text);
+                                  if (_readerController.text.length > 3) {
+                                    AppSherdDb()
+                                        .dbCreateReader(_readerController.text);
+                                    readerLabelInfo(context);
+                                  } else if (_userNameController.text.length >
+                                      2) {
+                                    AppSherdDb().dbCreateUserName(
+                                        _userNameController.text);
+                                  } else if (_userPassController.text.length >
+                                      2) {
+                                    AppSherdDb().dbCreateUserPass(
+                                        _userPassController.text);
+                                  } else if (_serverUrlController.text.length >
+                                      2) {
+                                    AppSherdDb().dbCreateServerUrl(
+                                        _serverUrlController.text);
+                                    serverUrlLabelInfo(context);
+                                  } else {
+                                    Method.EntryDialog(context);
+                                  }
+                                  RpcServer().getReaderLabel(
+                                      _readerController.text, context);
                                 },
                                 child: const Text('Senden'),
                               ),
@@ -134,12 +160,24 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     );
   }
 
-  void readerLabelConfig(BuildContext context) {
-    AppSherdDb().dbCreateReader(_readerController.text);
-    _readerController.clear();
+  void readerLabelInfo(BuildContext context) {
     setState(() {
-      infoText();
+      readerText();
     });
-    Navigator.pushNamed(context, '/homeScreen');
+    clearTextField();
+  }
+
+  void serverUrlLabelInfo(BuildContext context) {
+    setState(() {
+      serverUrlText();
+    });
+    clearTextField();
+  }
+
+  void clearTextField() {
+    _readerController.clear();
+    _serverUrlController.clear();
+    _userNameController.clear();
+    _userPassController.clear();
   }
 }
