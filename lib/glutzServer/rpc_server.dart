@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:json_rpc_client/json_rpc_client.dart';
+import '../main.dart';
 import 'rpc_collection.dart';
 
 class RpcServer extends ChangeNotifier {
@@ -35,18 +36,26 @@ class RpcServer extends ChangeNotifier {
   }
 
   getReaderLabel(userGivenText, BuildContext context) async {
+    int counter = 0;
     try {
-      final readersList = await getDevicesInfo(context);
+      final List readersList = await getDevicesInfo(context);
       for (var reader in readersList) {
         if (reader.containsValue(userGivenText)) {
           print('exist');
+          return;
         } else {
-          print('no');
+          counter++;
+
+          if (readersList.length == counter) {
+            // ignore: use_build_context_synchronously
+            Method.EntryDialog(context, text: 'Reader dont exist');
+          }
         }
       }
     } on Exception catch (e) {
       Method.EntryDialog(context, text: e.toString());
-      print('this readerList $e');
+    } on TypeError catch (e) {
+      Method.EntryDialog(context, text: e.toString());
     }
   }
 }

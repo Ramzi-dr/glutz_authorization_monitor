@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'call_screen.dart';
 import 'home_screen.dart';
-
+class NavigationService { 
+  static GlobalKey<NavigatorState> navigatorKey = 
+  GlobalKey<NavigatorState>();
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSherdDb().init();
@@ -28,6 +31,7 @@ class MyApp extends StatelessWidget {
         // ignore: prefer_const_constructors
       ],
       child: MaterialApp(
+        navigatorKey: NavigationService.navigatorKey,
           debugShowCheckedModeBanner: false,
           initialRoute: ('/'),
           routes: {

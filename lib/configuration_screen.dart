@@ -143,7 +143,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
 
                                     RpcServer().getReaderLabel(
                                         _readerController.text, context);
-                                    clearTextField();
                                   } else if (_serverUrlController.text.length >
                                       2) {
                                     AppSherdDb().dbCreateServerUrl(
@@ -155,6 +154,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   } else {
                                     Method.EntryDialog(context);
                                   }
+                                  clearTextField();
                                 },
                                 child: const Text('Senden'),
                               ),
@@ -188,7 +188,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
   void clearTextField() {
     _readerController.clear();
     _serverUrlController.clear();
-    _userNameController.clear();
+   // _userNameController.clear();
     _userPassController.clear();
   }
 }
