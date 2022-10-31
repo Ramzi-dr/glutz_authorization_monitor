@@ -19,11 +19,15 @@ class AppSherdDb with ChangeNotifier {
   dbCreateUserName(userName) async {
     await prefs.setString('userName', userName);
   }
+
   dbCreateUserPass(userPass) async {
     await prefs.setString('userPass', userPass);
   }
+
   dbCreateServerUrl(serverUrl) async {
+    print('doing');
     await prefs.setString('serverUrl', serverUrl);
+    print('done');
   }
 
   String dbSearchData(dataToSearch) {
