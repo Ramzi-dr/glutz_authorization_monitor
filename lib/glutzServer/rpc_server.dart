@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
+import 'package:glutz_authorization_monitor/home_screen.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:json_rpc_client/json_rpc_client.dart';
 import '../main.dart';
@@ -41,7 +42,8 @@ class RpcServer extends ChangeNotifier {
       final List readersList = await getDevicesInfo(context);
       for (var reader in readersList) {
         if (reader.containsValue(userGivenText)) {
-          print('exist');
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, '/homeScreen');
           return;
         } else {
           counter++;
