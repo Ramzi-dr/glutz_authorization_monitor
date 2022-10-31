@@ -20,7 +20,6 @@ class MyTextField extends StatelessWidget {
         onChanged: ((value) {}),
         obscureText: obscureText,
         textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
         decoration: TextFieldDecoration(textLabel));
   }
 }
