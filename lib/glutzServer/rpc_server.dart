@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
@@ -32,13 +31,8 @@ class RpcServer extends ChangeNotifier {
       });
       return myValue;
     } on Exception catch (e) {
-      print(serverUrl);
       Method.EntryDialog(text: e.toString());
     } on Error catch (e) {
-      print(serverUrl);
-      Method.EntryDialog(text: e.toString());
-    } on DomException catch (e) {
-      print(serverUrl);
       Method.EntryDialog(text: e.toString());
     }
   }
