@@ -125,25 +125,36 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   if (_readerController.text.length > 3) {
                                     AppSherdDb()
                                         .dbCreateReader(_readerController.text);
+
+                                    RpcServer().getReaderLabel(
+                                        _readerController.text, context);
                                     readerLabelInfo(context);
                                   } else if (_userNameController.text.length >
                                       2) {
                                     AppSherdDb().dbCreateUserName(
                                         _userNameController.text);
+
+                                    RpcServer().getReaderLabel(
+                                        _readerController.text, context);
                                   } else if (_userPassController.text.length >
                                       2) {
                                     AppSherdDb().dbCreateUserPass(
                                         _userPassController.text);
+
+                                    RpcServer().getReaderLabel(
+                                        _readerController.text, context);
+                                    clearTextField();
                                   } else if (_serverUrlController.text.length >
                                       2) {
                                     AppSherdDb().dbCreateServerUrl(
                                         _serverUrlController.text);
+
+                                    RpcServer().getReaderLabel(
+                                        _readerController.text, context);
                                     serverUrlLabelInfo(context);
                                   } else {
                                     Method.EntryDialog(context);
                                   }
-                                  RpcServer().getReaderLabel(
-                                      _readerController.text, context);
                                 },
                                 child: const Text('Senden'),
                               ),

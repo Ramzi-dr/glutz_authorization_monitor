@@ -29,22 +29,24 @@ class RpcServer extends ChangeNotifier {
       return myValue;
     } on Exception catch (e) {
       Method.EntryDialog(context, text: e.toString());
+    } on Error catch (e) {
+      Method.EntryDialog(context, text: e.toString());
     }
   }
 
   getReaderLabel(userGivenText, BuildContext context) async {
     try {
-      for (var readers in await getDevicesInfo(context) as List) {
-        print(readers);
-        //if (readers['label'] = userGivenText) {
-         // print(true);
-         // Navigator.pushNamed(context, '/homeScreen');
-        //}
-        ;
+      final readersList = await getDevicesInfo(context);
+      for (var reader in readersList) {
+        if (reader.containsValue(userGivenText)) {
+          print('exist');
+        } else {
+          print('no');
+        }
       }
     } on Exception catch (e) {
+      Method.EntryDialog(context, text: e.toString());
       print('this readerList $e');
-      // TODO
     }
   }
 }
