@@ -9,7 +9,7 @@ class AppSherdDb with ChangeNotifier {
   }
 
   bool dbCheckValue(value) {
-    return prefs.containsKey(value);
+    return   prefs.containsKey(value);
   }
 
   dbCreateReader(reader) async {
@@ -26,7 +26,7 @@ class AppSherdDb with ChangeNotifier {
     await prefs.setString('serverUrl', serverUrl);
   }
 
-  String dbSearchData(dataToSearch) {
-    return prefs.getString(dataToSearch) ?? '';
+   dbSearchData(dataToSearch) {
+     return prefs.getString(dataToSearch) ?? '';
   }
 }

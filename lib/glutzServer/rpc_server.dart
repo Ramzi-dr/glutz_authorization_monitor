@@ -9,13 +9,14 @@ import 'rpc_collection.dart';
 class RpcServer extends ChangeNotifier {
   static const id = '/';
 
-  Future getDevicesInfo(BuildContext context) async {
+  final context = navigatorKey.currentContext!;
+  Future getDevicesInfo() async {
     Object? myValue;
-    const rpcPort = 8332;
-    final serverIp = AppSherdDb().dbSearchData('serverUrl');
+    final serverIpPort = AppSherdDb().dbSearchData('serverUrl');
     final rpcUser = AppSherdDb().dbSearchData('userName');
     final rpcPass = AppSherdDb().dbSearchData('userPass');
-    final serverUrl = 'http://$rpcUser:$rpcPass@$serverIp:$rpcPort/rpc/';
+    final serverUrl = 'http://$rpcUser:$rpcPass@$serverIpPort/rpc/';
+    print('serverUrl: $serverUrl');
     final client = JRPCHttpClient(Uri.parse(serverUrl));
     try {
       await client
@@ -36,12 +37,13 @@ class RpcServer extends ChangeNotifier {
     }
   }
 
-  getReaderLabel(userGivenText, BuildContext context) async {
+  getReaderLabel() async {
+    final readerInDB = AppSherdDb().dbSearchData('reader');
     int counter = 0;
     try {
-      final List readersList = await getDevicesInfo(context);
+      final List readersList = await getDevicesInfo();
       for (var reader in readersList) {
-        if (reader.containsValue(userGivenText)) {
+        if (reader.containsValue(readerInDB)) {
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/homeScreen');
           return;

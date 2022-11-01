@@ -17,9 +17,9 @@ class ConfigurationScreen extends StatefulWidget {
 
 class _ConfigurationScreenState extends State<ConfigurationScreen> {
   final TextEditingController _readerController = TextEditingController();
-  final TextEditingController _serverUrlController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userPassController = TextEditingController();
+  final TextEditingController _serverUrlController = TextEditingController();
 
   String serverUrlText() {
     return AppSherdDb().dbSearchData('serverUrl');
@@ -95,7 +95,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                         MyTextField(
                           controller: _userPassController,
                           textLabel: 'User Pass',
-                          obscureText: false,
+                          obscureText: true,
                         ),
                         const SizedBox(
                           height: 20,
@@ -122,39 +122,28 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   textStyle: const TextStyle(fontSize: 20),
                                 ),
                                 onPressed: () {
-                                  if (_readerController.text.length > 3) {
+                                  if (_readerController.text.length > 2) {
                                     AppSherdDb()
                                         .dbCreateReader(_readerController.text);
 
-                                    RpcServer().getReaderLabel(
-                                        _readerController.text, context);
-                                    readerLabelInfo(context);
-                                  } else if (_userNameController.text.length >
-                                      2) {
+                                    readerLabelInfo();
+                                  }
+                                  if (_userNameController.text.length > 2) {
                                     AppSherdDb().dbCreateUserName(
                                         _userNameController.text);
-
-                                    RpcServer().getReaderLabel(
-                                        _readerController.text, context);
-                                  } else if (_userPassController.text.length >
-                                      2) {
+                                  }
+                                  if (_userPassController.text.length > 2) {
+                                    // print(_userPassController.text);
                                     AppSherdDb().dbCreateUserPass(
                                         _userPassController.text);
-
-                                    RpcServer().getReaderLabel(
-                                        _readerController.text, context);
-                                  } else if (_serverUrlController.text.length >
-                                      2) {
+                                  }
+                                  if (_serverUrlController.text.length > 2) {
                                     AppSherdDb().dbCreateServerUrl(
                                         _serverUrlController.text);
-
-                                    RpcServer().getReaderLabel(
-                                        _readerController.text, context);
-                                    serverUrlLabelInfo(context);
-                                  } else {
-                                    Method.EntryDialog(context);
+                                    serverUrlLabelInfo();
                                   }
-                                  clearTextField();
+                                  printDb();
+                                  RpcServer().getReaderLabel();
                                 },
                                 child: const Text('Senden'),
                               ),
@@ -171,24 +160,23 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     );
   }
 
-  void readerLabelInfo(BuildContext context) {
+  void printDb() {
+    print("reader: ${AppSherdDb().dbSearchData('reader')}");
+    print("userName: ${AppSherdDb().dbSearchData('userName')}");
+    print("userPass: ${AppSherdDb().dbSearchData('userPass')}");
+
+    print("serverUrl: ${AppSherdDb().dbSearchData('serverUrl')}");
+  }
+
+  void readerLabelInfo() {
     setState(() {
       readerText();
     });
-    clearTextField();
   }
 
-  void serverUrlLabelInfo(BuildContext context) {
+  void serverUrlLabelInfo() {
     setState(() {
       serverUrlText();
     });
-    clearTextField();
-  }
-
-  void clearTextField() {
-    _readerController.clear();
-    _serverUrlController.clear();
-   // _userNameController.clear();
-    _userPassController.clear();
   }
 }
