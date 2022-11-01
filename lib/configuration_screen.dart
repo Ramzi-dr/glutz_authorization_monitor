@@ -121,6 +121,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   primary: Colors.white,
                                   textStyle: const TextStyle(fontSize: 20),
                                 ),
+<<<<<<< HEAD
                                 onPressed: () {
                                   if (_readerController.text.length > 2) {
                                     AppSherdDb()
@@ -144,6 +145,42 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   }
                                   printDb();
                                   RpcServer().getReaderLabel();
+=======
+                                onPressed: ()async {
+                                  if (_readerController.text.length > 3) {
+                                    AppSherdDb()
+                                        .dbCreateReader(_readerController.text);
+
+                                    RpcServer().getReaderLabel(
+                                        AppSherdDb().dbSearchData('reader'));
+                                    readerLabelInfo();
+                                  } else if (_userNameController.text.length >
+                                      2) {
+                                    AppSherdDb().dbCreateUserName(
+                                        _userNameController.text);
+
+                                    RpcServer().getReaderLabel(
+                                        AppSherdDb().dbSearchData('reader'));
+                                  } else if (_userPassController.text.length >
+                                      2) {
+                                    AppSherdDb().dbCreateUserPass(
+                                        _userPassController.text);
+                                    _userPassController.clear();
+                                    RpcServer().getReaderLabel(
+                                        AppSherdDb().dbSearchData('reader'));
+                                  } else if (_serverUrlController.text.length >
+                                      2) {
+                                    await AppSherdDb().dbCreateServerUrl(
+                                        _serverUrlController.text);
+                                    print(AppSherdDb().dbCheckValue(
+                                        _serverUrlController.text));
+                                    RpcServer().getReaderLabel(
+                                        AppSherdDb().dbSearchData('reader'));
+                                    serverUrlLabelInfo();
+                                  } else {
+                                    Method.EntryDialog();
+                                  }
+>>>>>>> 5f91d4a13c71eacfa8ffbded4ce74914b5405e02
                                 },
                                 child: const Text('Senden'),
                               ),
@@ -160,6 +197,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     );
   }
 
+<<<<<<< HEAD
   void printDb() {
     print("reader: ${AppSherdDb().dbSearchData('reader')}");
     print("userName: ${AppSherdDb().dbSearchData('userName')}");
@@ -168,6 +206,8 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     print("serverUrl: ${AppSherdDb().dbSearchData('serverUrl')}");
   }
 
+=======
+>>>>>>> 5f91d4a13c71eacfa8ffbded4ce74914b5405e02
   void readerLabelInfo() {
     setState(() {
       readerText();
@@ -178,5 +218,10 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     setState(() {
       serverUrlText();
     });
+<<<<<<< HEAD
+=======
+
+    _serverUrlController.clear();
+>>>>>>> 5f91d4a13c71eacfa8ffbded4ce74914b5405e02
   }
 }

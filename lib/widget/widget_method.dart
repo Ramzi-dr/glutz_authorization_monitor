@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class Method {
   static AppBar appBar() {
     return AppBar(
@@ -15,13 +17,12 @@ class Method {
   static int selectedIndex = 1;
 
 
-
   // ignore: non_constant_identifier_names
-  static Future<dynamic> EntryDialog(BuildContext context,
+  static Future<dynamic> EntryDialog(
       {title = 'Es ist ein Fehler aufgetreten',
       text = 'Bitte versuchen Sie es erneut'}) {
     return showDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         builder: (BuildContext context) {
           return Center(
             child: AlertDialog(
