@@ -121,7 +121,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   primary: Colors.white,
                                   textStyle: const TextStyle(fontSize: 20),
                                 ),
-<<<<<<< HEAD
+
                                 onPressed: () {
                                   if (_readerController.text.length > 2) {
                                     AppSherdDb()
@@ -145,7 +145,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                   }
                                   printDb();
                                   RpcServer().getReaderLabel();
-=======
+
                                 onPressed: ()async {
                                   if (_readerController.text.length > 3) {
                                     AppSherdDb()
