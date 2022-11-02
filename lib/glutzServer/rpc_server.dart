@@ -40,37 +40,26 @@ class RpcServer extends ChangeNotifier {
   getReaderLabel() async {
     final readerInDB = AppSherdDb().dbSearchData('reader');
 
-    getReaderLabel(
-      userGivenText,
-    ) async {
-      int counter = 0;
-      try {
-        final List readersList = await getDevicesInfo();
-        for (var reader in readersList) {
-          if (reader.containsValue(readerInDB)) {
-            // ignore: use_build_context_synchronously
-            Navigator.pushNamed(context, '/homeScreen');
-
-            if (reader.containsValue(userGivenText)) {
-              Navigator.pushNamed(
-                  NavigationService.navigatorKey.currentContext!,
-                  '/homeScreen');
-
-              return;
-            } else {
-              counter++;
-
-              if (readersList.length == counter) {
-                Method.EntryDialog(text: 'Reader dont exist');
-              }
-            }
-          }
+    int counter = 0;
+    try {
+      final List readersList = await getDevicesInfo();
+      for (var reader in readersList) {
+        if (reader.containsValue(readerInDB)) {
+          print(reader);
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, '/homeScreen');
         }
-      } on Exception catch (e) {
-        Method.EntryDialog(text: e.toString());
-      } on TypeError catch (e) {
-        Method.EntryDialog(text: e.toString());
+
+        if (!reader.containsValue(readerInDB)) {
+          counter++;
+        } else if (readersList.length == counter) {
+          Method.EntryDialog(text: 'Reader dont exist');
+        }
       }
+    } on Exception catch (e) {
+      Method.EntryDialog(text: e.toString());
+    } on TypeError catch (e) {
+      Method.EntryDialog(text: e.toString());
     }
   }
 }
