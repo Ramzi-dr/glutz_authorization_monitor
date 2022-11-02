@@ -28,8 +28,8 @@ class AppSherdDb with ChangeNotifier {
     await prefs.setString('serverUrl', serverUrl);
   }
 
-  dbCreateReaderDeviceId(DeviceId) async {
-    await prefs.setString('readerDeviceId', DeviceId);
+  dbCreateReaderDeviceId(deviceId) async {
+    await prefs.setString('readerDeviceId', deviceId);
   }
 
   dbSearchData(dataToSearch) {
