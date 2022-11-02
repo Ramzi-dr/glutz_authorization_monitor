@@ -115,75 +115,67 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                 child: gradientColor(),
                               ),
                               TextButton(
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.all(16.0),
-                                  // ignore: deprecated_member_use
-                                  primary: Colors.white,
-                                  textStyle: const TextStyle(fontSize: 20),
-                                ),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.all(16.0),
+                                    // ignore: deprecated_member_use
+                                    primary: Colors.white,
+                                    textStyle: const TextStyle(fontSize: 20),
+                                  ),
+                                  onPressed: () {
+                                    if (_readerController.text.length > 2) {
+                                      AppSherdDb().dbCreateReader(
+                                          _readerController.text);
 
-                                onPressed: () {
-                                  if (_readerController.text.length > 2) {
-                                    AppSherdDb()
-                                        .dbCreateReader(_readerController.text);
+                                      readerLabelInfo();
+                                    }
+                                    if (_userNameController.text.length > 2) {
+                                      AppSherdDb().dbCreateUserName(
+                                          _userNameController.text);
+                                    }
+                                    if (_userPassController.text.length > 2) {
+                                      // print(_userPassController.text);
+                                      AppSherdDb().dbCreateUserPass(
+                                          _userPassController.text);
+                                    }
+                                    if (_serverUrlController.text.length > 2) {
+                                      AppSherdDb().dbCreateServerUrl(
+                                          _serverUrlController.text);
+                                      serverUrlLabelInfo();
+                                    }
+                                    printDb();
+                                    RpcServer().getReaderLabel();
 
-                                    readerLabelInfo();
-                                  }
-                                  if (_userNameController.text.length > 2) {
-                                    AppSherdDb().dbCreateUserName(
-                                        _userNameController.text);
-                                  }
-                                  if (_userPassController.text.length > 2) {
-                                    // print(_userPassController.text);
-                                    AppSherdDb().dbCreateUserPass(
-                                        _userPassController.text);
-                                  }
-                                  if (_serverUrlController.text.length > 2) {
-                                    AppSherdDb().dbCreateServerUrl(
-                                        _serverUrlController.text);
-                                    serverUrlLabelInfo();
-                                  }
-                                  printDb();
-                                  RpcServer().getReaderLabel();
+                                    onPressed:
+                                    () async {
+                                      if (_readerController.text.length > 3) {
+                                        AppSherdDb().dbCreateReader(
+                                            _readerController.text);
 
-                                onPressed: ()async {
-                                  if (_readerController.text.length > 3) {
-                                    AppSherdDb()
-                                        .dbCreateReader(_readerController.text);
-
-                                    RpcServer().getReaderLabel(
-                                        AppSherdDb().dbSearchData('reader'));
-                                    readerLabelInfo();
-                                  } else if (_userNameController.text.length >
-                                      2) {
-                                    AppSherdDb().dbCreateUserName(
-                                        _userNameController.text);
-
-                                    RpcServer().getReaderLabel(
-                                        AppSherdDb().dbSearchData('reader'));
-                                  } else if (_userPassController.text.length >
-                                      2) {
-                                    AppSherdDb().dbCreateUserPass(
-                                        _userPassController.text);
-                                    _userPassController.clear();
-                                    RpcServer().getReaderLabel(
-                                        AppSherdDb().dbSearchData('reader'));
-                                  } else if (_serverUrlController.text.length >
-                                      2) {
-                                    await AppSherdDb().dbCreateServerUrl(
-                                        _serverUrlController.text);
-                                    print(AppSherdDb().dbCheckValue(
-                                        _serverUrlController.text));
-                                    RpcServer().getReaderLabel(
-                                        AppSherdDb().dbSearchData('reader'));
-                                    serverUrlLabelInfo();
-                                  } else {
-                                    Method.EntryDialog();
-                                  }
->>>>>>> 5f91d4a13c71eacfa8ffbded4ce74914b5405e02
-                                },
-                                child: const Text('Senden'),
-                              ),
+                                        readerLabelInfo();
+                                      } else if (_userNameController
+                                              .text.length >
+                                          2) {
+                                        AppSherdDb().dbCreateUserName(
+                                            _userNameController.text);
+                                      } else if (_userPassController
+                                              .text.length >
+                                          2) {
+                                        AppSherdDb().dbCreateUserPass(
+                                            _userPassController.text);
+                                      } else if (_serverUrlController
+                                              .text.length >
+                                          2) {
+                                        await AppSherdDb().dbCreateServerUrl(
+                                            _serverUrlController.text);
+                                        print(AppSherdDb().dbCheckValue(
+                                            _serverUrlController.text));
+                                        serverUrlLabelInfo();
+                                      } else {
+                                        Method.EntryDialog();
+                                      }
+                                    };
+                                  },
+                                  child: const Text('Senden')),
                             ],
                           ),
                         ),
@@ -197,7 +189,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     );
   }
 
-<<<<<<< HEAD
   void printDb() {
     print("reader: ${AppSherdDb().dbSearchData('reader')}");
     print("userName: ${AppSherdDb().dbSearchData('userName')}");
@@ -206,8 +197,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     print("serverUrl: ${AppSherdDb().dbSearchData('serverUrl')}");
   }
 
-=======
->>>>>>> 5f91d4a13c71eacfa8ffbded4ce74914b5405e02
   void readerLabelInfo() {
     setState(() {
       readerText();
@@ -218,10 +207,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     setState(() {
       serverUrlText();
     });
-<<<<<<< HEAD
-=======
-
     _serverUrlController.clear();
->>>>>>> 5f91d4a13c71eacfa8ffbded4ce74914b5405e02
   }
 }

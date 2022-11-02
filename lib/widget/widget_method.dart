@@ -22,7 +22,7 @@ class Method {
       {title = 'Es ist ein Fehler aufgetreten',
       text = 'Bitte versuchen Sie es erneut'}) {
     return showDialog(
-        context: navigatorKey.currentContext!,
+        context: NavigationService.navigatorKey.currentContext!,
         builder: (BuildContext context) {
           return Center(
             child: AlertDialog(
