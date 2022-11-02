@@ -16,7 +16,6 @@ class RpcServer extends ChangeNotifier {
     final rpcUser = AppSherdDb().dbSearchData('userName');
     final rpcPass = AppSherdDb().dbSearchData('userPass');
     final serverUrl = 'http://$rpcUser:$rpcPass@$serverIpPort/rpc/';
-    print('serverUrl: $serverUrl');
     final client = JRPCHttpClient(Uri.parse(serverUrl));
     try {
       await client
@@ -49,7 +48,6 @@ class RpcServer extends ChangeNotifier {
 
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/homeScreen');
-          print(AppSherdDb().dbSearchData('readerDeviceId'));
         }
 
         if (!reader.containsValue(readerInDB)) {
