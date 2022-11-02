@@ -102,7 +102,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                         ),
                         MyTextField(
                             controller: _serverUrlController,
-                            textLabel: 'Server Url',
+                            textLabel: 'Server Url:Port',
                             obscureText: false),
                         const SizedBox(
                           height: 20,
@@ -145,8 +145,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                         _serverUrlController.text.isEmpty) {
                                       Method.EntryDialog();
                                     }
-
-                                    printDb();
+                                    RpcServer().getReaderLabel();
                                   },
                                   child: const Text('Senden')),
                             ],
@@ -166,7 +165,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     print("reader: ${AppSherdDb().dbSearchData('reader')}");
     print("userName: ${AppSherdDb().dbSearchData('userName')}");
     print("userPass: ${AppSherdDb().dbSearchData('userPass')}");
-
     print("serverUrl: ${AppSherdDb().dbSearchData('serverUrl')}");
   }
 

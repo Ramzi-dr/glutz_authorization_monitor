@@ -8,7 +8,7 @@ class Method {
         automaticallyImplyLeading: false,
         title: const Center(
             child: Text(
-          'Covid Monitor',
+          'Door Monitor System',
           style: TextStyle(fontSize: 30),
         )),
         flexibleSpace: gradientColor());

@@ -45,15 +45,18 @@ class RpcServer extends ChangeNotifier {
       final List readersList = await getDevicesInfo();
       for (var reader in readersList) {
         if (reader.containsValue(readerInDB)) {
-          print(reader);
+          AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
+
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/homeScreen');
+          print(AppSherdDb().dbSearchData('readerDeviceId'));
         }
 
         if (!reader.containsValue(readerInDB)) {
           counter++;
-        } else if (readersList.length == counter) {
-          Method.EntryDialog(text: 'Reader dont exist');
+          if (readersList.length == counter) {
+            Method.EntryDialog(text: 'Reader dont exist');
+          }
         }
       }
     } on Exception catch (e) {
