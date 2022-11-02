@@ -125,7 +125,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                     if (_readerController.text.length > 2) {
                                       AppSherdDb().dbCreateReader(
                                           _readerController.text);
-
                                       readerLabelInfo();
                                     }
                                     if (_userNameController.text.length > 2) {
@@ -133,7 +132,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                           _userNameController.text);
                                     }
                                     if (_userPassController.text.length > 2) {
-                                      // print(_userPassController.text);
                                       AppSherdDb().dbCreateUserPass(
                                           _userPassController.text);
                                     }
@@ -141,39 +139,14 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                       AppSherdDb().dbCreateServerUrl(
                                           _serverUrlController.text);
                                       serverUrlLabelInfo();
+                                    } else if (_readerController.text.isEmpty &&
+                                        _userNameController.text.isEmpty &&
+                                        _userPassController.text.isEmpty &&
+                                        _serverUrlController.text.isEmpty) {
+                                      Method.EntryDialog();
                                     }
+
                                     printDb();
-                                    RpcServer().getReaderLabel();
-
-                                    onPressed:
-                                    () async {
-                                      if (_readerController.text.length > 3) {
-                                        AppSherdDb().dbCreateReader(
-                                            _readerController.text);
-
-                                        readerLabelInfo();
-                                      } else if (_userNameController
-                                              .text.length >
-                                          2) {
-                                        AppSherdDb().dbCreateUserName(
-                                            _userNameController.text);
-                                      } else if (_userPassController
-                                              .text.length >
-                                          2) {
-                                        AppSherdDb().dbCreateUserPass(
-                                            _userPassController.text);
-                                      } else if (_serverUrlController
-                                              .text.length >
-                                          2) {
-                                        await AppSherdDb().dbCreateServerUrl(
-                                            _serverUrlController.text);
-                                        print(AppSherdDb().dbCheckValue(
-                                            _serverUrlController.text));
-                                        serverUrlLabelInfo();
-                                      } else {
-                                        Method.EntryDialog();
-                                      }
-                                    };
                                   },
                                   child: const Text('Senden')),
                             ],
@@ -207,6 +180,5 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     setState(() {
       serverUrlText();
     });
-    _serverUrlController.clear();
   }
 }
