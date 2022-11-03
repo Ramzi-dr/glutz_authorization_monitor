@@ -16,7 +16,6 @@ class Method {
 
   static int selectedIndex = 1;
 
-
   // ignore: non_constant_identifier_names
   static Future<dynamic> EntryDialog(
       {title = 'Es ist ein Fehler aufgetreten',
@@ -38,6 +37,12 @@ class Method {
                 )),
           );
         });
+  }
+
+  static callDialog() {
+    EntryDialog(
+        text:
+            'connection Failed please controle server Url, userName and userPass');
   }
 }
 

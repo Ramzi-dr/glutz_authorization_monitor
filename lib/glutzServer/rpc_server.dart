@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
+import 'package:glutz_authorization_monitor/glutzServer/ws_server.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:json_rpc_client/json_rpc_client.dart';
 import '../main.dart';
@@ -7,6 +8,7 @@ import 'rpc_collection.dart';
 
 class RpcServer extends ChangeNotifier {
   static const id = '/';
+  void callMethodWhenError() {}
 
   final context = NavigationService.navigatorKey.currentContext!;
 
@@ -30,7 +32,7 @@ class RpcServer extends ChangeNotifier {
       });
       return myValue;
     } on Exception catch (e) {
-      Method.EntryDialog(text: e.toString());
+       Method.callDialog();;
     } on Error catch (e) {
       Method.EntryDialog(text: e.toString());
     }
@@ -48,6 +50,7 @@ class RpcServer extends ChangeNotifier {
 
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/homeScreen');
+          WebsocketServer().listenToServer();
         }
 
         if (!reader.containsValue(readerInDB)) {
@@ -58,9 +61,9 @@ class RpcServer extends ChangeNotifier {
         }
       }
     } on Exception catch (e) {
-      Method.EntryDialog(text: e.toString());
+      Method.callDialog();
     } on TypeError catch (e) {
-      Method.EntryDialog(text: e.toString());
+      Method.callDialog();
     }
   }
 }

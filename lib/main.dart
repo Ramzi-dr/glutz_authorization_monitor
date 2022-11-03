@@ -17,7 +17,6 @@ class NavigationService {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSherdDb().init();
-  WebsocketServer().listenToServer();
   runApp(const MyApp());
 }
 
