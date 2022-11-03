@@ -42,7 +42,7 @@ class Method {
   static callDialog() {
     EntryDialog(
         text:
-            'connection Failed please controle server Url, userName and userPass');
+            'please controle connection, server Url, userName and userPass');
   }
 }
 

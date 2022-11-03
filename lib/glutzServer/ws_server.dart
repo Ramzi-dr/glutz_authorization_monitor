@@ -1,17 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/glutzServer/ws_collection.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:web_socket_channel/io.dart';
 
 class WebsocketServer with ChangeNotifier {
+  var dialogCounter = 0;
+  var connected = false;
   Timer? timer;
   void reconnect() {
-    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      listenToServer();
-    });
+    if (connected == false) {
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        print(connected);
+        listenToServer();
+      });
+    } else {
+      timer?.cancel();
+    }
   }
 
   listenToServer() async {
@@ -26,19 +34,25 @@ class WebsocketServer with ChangeNotifier {
       response.stream.listen(
         (event) {
           final data = jsonDecode(event);
-          print(data);
+
           if (data['method'] == 'aboutToQuit') {
-            listenToServer();
+            reconnect();
+          }
+          if (data['method'] != 'aboutToQuit') {
+           
           }
         },
         onError: (me) {
-          //reconnect();
-          print(me);
+          reconnect();
+          print('me: $me');
+          dialogCounter++;
 
-          if (me.toString().contains('was not upgraded to websocket')) {
-            Method.EntryDialog(
-                text:
-                    'connection Failed please controle server Url, userName and userPass');
+          if (me.toString().contains(
+                  'WebSocketChannelException: WebSocketChannelException: SocketException:') &&
+              dialogCounter == 20) {
+            reconnect();
+
+            Method.callDialog();
           }
           ;
         },
