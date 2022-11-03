@@ -21,7 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
   }
 
-  final cardTextInfo = 'hallo Ramzi';
+  final infoText = 'please do this';
+  final halloUser = 'Hallo user';
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 20,
             ),
             Text(AppSherdDb().dbSearchData('reader'),
-                style: TextStyle(fontSize: 20)),
+                style: const TextStyle(fontSize: 20)),
             Expanded(
               flex: 2,
               child: Center(
@@ -60,11 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   elevation: 5,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
-                    child: Container(width: double.maxFinite,
-                      child: Center(
-                        child: Text(
-                          cardTextInfo,
-                          style: TextStyle(
+                    child: Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 10,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            infoText,
                           ),
                         ),
                       ),
