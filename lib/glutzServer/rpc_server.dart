@@ -32,8 +32,10 @@ class RpcServer extends ChangeNotifier {
       });
       return myValue;
     } on Exception catch (e) {
-       Method.callDialog();;
+      print('exception error: $e');
+      Method.callDialog();
     } on Error catch (e) {
+      print('error error: $e');
       Method.EntryDialog(text: e.toString());
     }
   }
@@ -61,8 +63,10 @@ class RpcServer extends ChangeNotifier {
         }
       }
     } on Exception catch (e) {
+      print('exception from getReaderLabel: $e');
       Method.callDialog();
     } on TypeError catch (e) {
+        print('error from getReaderLabel: $e');
       Method.callDialog();
     }
   }

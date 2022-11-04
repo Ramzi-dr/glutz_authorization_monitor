@@ -4,6 +4,8 @@ import 'package:glutz_authorization_monitor/glutzServer/ws_server.dart';
 import 'package:glutz_authorization_monitor/home_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'glutzServer/rpc_server.dart';
+
 class HoldScreen extends StatefulWidget {
   static const id = ('/');
   const HoldScreen({super.key});
@@ -21,7 +23,7 @@ class _HoldScreenState extends State<HoldScreen> {
         !AppSherdDb().dbCheckValue('serverUrl')) {
       return const ConfigurationScreen();
     } else {
-      WebsocketServer().listenToServer();
+      RpcServer().getReaderLabel();
       return HomeScreen();
     }
   }
