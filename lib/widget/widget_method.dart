@@ -23,6 +23,8 @@ class Method {
     return showDialog(
         context: NavigationService.navigatorKey.currentContext!,
         builder: (BuildContext context) {
+          Future.delayed(
+            const  Duration(seconds: 5), (() => Navigator.of(context).pop(true)));
           return Center(
             child: AlertDialog(
                 title: Text(title, textAlign: TextAlign.center),
@@ -41,8 +43,7 @@ class Method {
 
   static callDialog() {
     EntryDialog(
-        text:
-            'please controle connection, server Url, userName and userPass');
+        text: 'please controle connection, server Url, userName and userPass');
   }
 }
 

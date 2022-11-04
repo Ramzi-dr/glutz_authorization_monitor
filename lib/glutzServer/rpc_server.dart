@@ -8,33 +8,37 @@ import 'package:json_rpc_client/json_rpc_client.dart';
 import '../main.dart';
 import 'rpc_collection.dart';
 
+final context = NavigationService.navigatorKey.currentContext!;
+
 class RpcServer extends ChangeNotifier {
   static const id = '/';
+  var connected = false;
+  var counter = 0;
+  var dialogCounter = 0;
   void callMethodWhenError(e) {
     print('e: $e');
     print(dialogCounter);
     if (e.toString().contains('Connection refused') ||
-        e.toString().contains('TimeoutException')) {
+        e.toString().contains('TimeoutException') ||
+        e.toString().contains('Connection failed')|| connected == false ) {
+      Future.delayed(const Duration(seconds: 5), (() => reconnect()));
+      Method.callDialog();
       dialogCounter++;
-      reconnect();
-
-      if (dialogCounter == 10) {
-        Method.callDialog();
-        dialogCounter++;
-      }
+      print('dialogCounter form callMethod: $dialogCounter');
     }
   }
 
-  var counter = 0;
-  var dialogCounter = 0;
-  Timer? timer;
+ late Timer  timer;
   void reconnect() {
-    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      getDevicesInfo();
-    });
+    if (connected == false) {
+   timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    getDevicesInfo();
+  });
+}
+    if (connected == true) {
+      timer.cancel();
+    }
   }
-
-  final context = NavigationService.navigatorKey.currentContext!;
 
   Future getDevicesInfo() async {
     List myValue;
@@ -56,10 +60,11 @@ class RpcServer extends ChangeNotifier {
         dialogCounter = 0;
         myValue = value.result as List;
         print(myValue);
+        connected = true;
+        print('connected: $connected');
 
         try {
           for (var reader in myValue) {
-            timer?.cancel();
             if (reader.containsValue(readerInDB)) {
               AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
 
@@ -81,7 +86,7 @@ class RpcServer extends ChangeNotifier {
       }).timeout(const Duration(seconds: 5));
     } on Exception catch (e) {
       print('exception error: $e');
-      Method.callDialog();
+      callMethodWhenError(e);
 
       callMethodWhenError(e);
     } on Error catch (e) {
