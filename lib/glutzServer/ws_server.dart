@@ -1,27 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/glutzServer/ws_collection.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:web_socket_channel/io.dart';
 
+import '../main.dart';
+
 class WebsocketServer with ChangeNotifier {
   var dialogCounter = 0;
   var connected = false;
-  Timer? timer;
-  void reconnect() {
-    if (connected == false) {
-      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-        print(connected);
-        listenToServer();
-      });
-    } else {
-      timer?.cancel();
-    }
-  }
-
+  final context = NavigationService.navigatorKey.currentContext!;
   listenToServer() async {
     final serverIpPort = AppSherdDb().dbSearchData('serverUrl');
     final serverUser = AppSherdDb().dbSearchData('userName');
@@ -36,23 +26,30 @@ class WebsocketServer with ChangeNotifier {
           final data = jsonDecode(event);
 
           if (data['method'] == 'aboutToQuit') {
-            reconnect();
-          }
-          if (data['method'] != 'aboutToQuit') {
-           
+            Future.delayed(
+                const Duration(seconds: 5), (() => listenToServer()));
+            print('server Quit and we try to reconnect');
+          } else {
+            print(data);
+            if (dialogCounter > 10) {
+              Navigator.pushNamed(context, '/homeScreen');
+            }
+            dialogCounter = 0;
           }
         },
         onError: (me) {
-          reconnect();
+          Future.delayed(const Duration(seconds: 5), (() => listenToServer()));
           print('me: $me');
           dialogCounter++;
 
           if (me.toString().contains(
-                  'WebSocketChannelException: WebSocketChannelException: SocketException:') &&
-              dialogCounter == 20) {
-            reconnect();
+              'WebSocketChannelException: WebSocketChannelException: SocketException:')) {
+            Future.delayed(
+                const Duration(seconds: 5), (() => listenToServer()));
 
-            Method.callDialog();
+            if (dialogCounter == 10) {
+              Method.EntryDialog(text: me.toString());
+            }
           }
           ;
         },

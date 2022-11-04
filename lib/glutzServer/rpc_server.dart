@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/glutzServer/ws_server.dart';
@@ -54,6 +53,7 @@ class RpcServer extends ChangeNotifier {
     } on Exception catch (e) {
       if (e.toString().contains('Future not completed') && dialogCounter < 1) {
         Method.callDialog();
+        print('hier');
         dialogCounter++;
       }
       Future.delayed(const Duration(seconds: 5), (() => getDevicesInfo()));
