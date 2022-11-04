@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/configuration_screen.dart';
 import 'package:glutz_authorization_monitor/glutzServer/rpc_server.dart';
-import 'package:glutz_authorization_monitor/glutzServer/ws_collection.dart';
-import 'package:glutz_authorization_monitor/glutzServer/ws_server.dart';
 import 'package:glutz_authorization_monitor/hold_screen.dart';
 import 'package:glutz_authorization_monitor/email_screen.dart';
 import 'package:provider/provider.dart';
