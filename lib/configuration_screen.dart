@@ -139,11 +139,6 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                       AppSherdDb().dbCreateServerUrl(
                                           _serverUrlController.text);
                                       serverUrlLabelInfo();
-                                    } else if (_readerController.text.isEmpty &&
-                                        _userNameController.text.isEmpty &&
-                                        _userPassController.text.isEmpty &&
-                                        _serverUrlController.text.isEmpty) {
-                                      Method.EntryDialog();
                                     }
                                     RpcServer().getDevicesInfo();
                                   },

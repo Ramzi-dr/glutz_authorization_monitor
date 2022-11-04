@@ -24,10 +24,8 @@ class _HoldScreenState extends State<HoldScreen> {
         !AppSherdDb().dbCheckValue('serverUrl')) {
       return const ConfigurationScreen();
     } else {
-
       RpcServer().getReaderLabel();
 
-      RpcServer().getDevicesInfo();
       return HomeScreen();
     }
   }

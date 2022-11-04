@@ -79,7 +79,6 @@ class RpcServer extends ChangeNotifier {
         }
       }).timeout(const Duration(seconds: 5));
     } on Exception catch (e) {
-
       print('exception error: $e');
       Method.callDialog();
 
@@ -97,6 +96,7 @@ class RpcServer extends ChangeNotifier {
     try {
       final List readersList = await getDevicesInfo();
       for (var reader in readersList) {
+        print(reader);
         if (reader.containsValue(readerInDB)) {
           AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
 
@@ -116,9 +116,8 @@ class RpcServer extends ChangeNotifier {
       print('exception from getReaderLabel: $e');
       Method.callDialog();
     } on TypeError catch (e) {
-        print('error from getReaderLabel: $e');
+      print('error from getReaderLabel: $e');
       Method.callDialog();
     }
   }
-
 }
