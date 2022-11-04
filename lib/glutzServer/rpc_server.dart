@@ -55,6 +55,7 @@ class RpcServer extends ChangeNotifier {
           .then((value) {
         dialogCounter = 0;
         myValue = value.result as List;
+        print(myValue);
 
         try {
           for (var reader in myValue) {
@@ -86,38 +87,6 @@ class RpcServer extends ChangeNotifier {
     } on Error catch (e) {
       print('error error: $e');
       Method.EntryDialog(text: e.toString());
-    }
-  }
-
-  getReaderLabel() async {
-    final readerInDB = AppSherdDb().dbSearchData('reader');
-
-    int counter = 0;
-    try {
-      final List readersList = await getDevicesInfo();
-      for (var reader in readersList) {
-        print(reader);
-        if (reader.containsValue(readerInDB)) {
-          AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
-
-          // ignore: use_build_context_synchronously
-          Navigator.pushNamed(context, '/homeScreen');
-          WebsocketServer().listenToServer();
-        }
-
-        if (!reader.containsValue(readerInDB)) {
-          counter++;
-          if (readersList.length == counter) {
-            Method.EntryDialog(text: 'Reader dont exist');
-          }
-        }
-      }
-    } on Exception catch (e) {
-      print('exception from getReaderLabel: $e');
-      Method.callDialog();
-    } on TypeError catch (e) {
-      print('error from getReaderLabel: $e');
-      Method.callDialog();
     }
   }
 }
