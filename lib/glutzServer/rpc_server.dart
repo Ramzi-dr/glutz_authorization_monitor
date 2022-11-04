@@ -17,25 +17,6 @@ class RpcServer extends ChangeNotifier {
   var reconnectCounter = 0;
   var dialogCounter = 0;
 
-
-  void reconnect() {
-    print('connected from reconnect: $connected');
-    print('reconnectCounter: $reconnectCounter');
-    if (connected == false) {
-      Timer.periodic(const Duration(seconds: 5), (timer) {
-        Future.delayed(const Duration(seconds: 5), (() {
-          getDevicesInfo();
-          reconnectCounter++;
-          dialogCounter++;
-        }));
-        if (connected == true) {
-          timer.cancel();
-          reconnectCounter = 0;
-        }
-      });
-    }
-  }
-
   Future getDevicesInfo() async {
     List myValue;
     final serverIpPort = AppSherdDb().dbSearchData('serverUrl');
@@ -53,22 +34,15 @@ class RpcServer extends ChangeNotifier {
         params: RpcCollection.params,
       ))
           .then((value) {
-        connected = true;
-
         myValue = value.result as List;
-        print(myValue);
-
-        print('connected: $connected');
 
         for (var reader in myValue) {
           if (reader.containsValue(readerInDB)) {
             AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
-
             // ignore: use_build_context_synchronously
-            Navigator.pushNamed(context, '/homeScreen');
             WebsocketServer().listenToServer();
+            Navigator.pushNamed(context, '/homeScreen');
           }
-
           if (!reader.containsValue(readerInDB)) {
             counter++;
             if (myValue.length == counter) {
@@ -78,29 +52,13 @@ class RpcServer extends ChangeNotifier {
         }
       }).timeout(const Duration(seconds: 5));
     } on Exception catch (e) {
-      print('exception error: $e');
-      if (e.toString().contains('Future not completed') &&
-          reconnectCounter < 5 &&
-          connected == false) {
-        reconnect();
-
-        if (dialogCounter < 2) {
-          Method.callDialog();
-          dialogCounter++;
-        }
-      } else {
-        if (dialogCounter < 2) {
-          Method.EntryDialog(text: e.toString());
-          dialogCounter++;
-        }
-        if (reconnectCounter < 5 && connected == false) {
-          reconnect();
-        }
-        ;
+      if (e.toString().contains('Future not completed') && dialogCounter < 1) {
+        Method.callDialog();
+        dialogCounter++;
       }
+      Future.delayed(const Duration(seconds: 5), (() => getDevicesInfo()));
     } on Error catch (e) {
-      print('error error: $e');
-      Method.EntryDialog(text: e.toString());
+      Future.delayed(const Duration(seconds: 5), (() => getDevicesInfo()));
     }
   }
 }
