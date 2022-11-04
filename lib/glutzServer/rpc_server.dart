@@ -1,5 +1,5 @@
 import 'dart:async';
-
+<
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/glutzServer/ws_server.dart';
@@ -16,30 +16,17 @@ class RpcServer extends ChangeNotifier {
   var counter = 0;
   var reconnectCounter = 0;
   var dialogCounter = 0;
-  void callMethodWhenError(e) {
-    print('e: $e');
-    print(dialogCounter);
-    if (e.toString().contains('Connection refused') ||
-        e.toString().contains('TimeoutException') ||
-        e.toString().contains('Connection failed') ||
-        connected == false) {
-      Future.delayed(const Duration(seconds: 5), (() => reconnect()));
-      Method.callDialog();
-      dialogCounter++;
 
-      print('dialogCounter form callMethod: $dialogCounter');
-    }
-  }
 
-  late Timer timer;
   void reconnect() {
     print('connected from reconnect: $connected');
     print('reconnectCounter: $reconnectCounter');
-    if (connected == false && reconnectCounter < 20) {
-      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    if (connected == false) {
+      Timer.periodic(const Duration(seconds: 5), (timer) {
         Future.delayed(const Duration(seconds: 5), (() {
           getDevicesInfo();
           reconnectCounter++;
+          dialogCounter++;
         }));
         if (connected == true) {
           timer.cancel();
@@ -66,11 +53,10 @@ class RpcServer extends ChangeNotifier {
         params: RpcCollection.params,
       ))
           .then((value) {
-        dialogCounter = 0;
+        connected = true;
+
         myValue = value.result as List;
         print(myValue);
-        connected = true;
-        reconnectCounter = 0;
 
         print('connected: $connected');
 
@@ -93,8 +79,11 @@ class RpcServer extends ChangeNotifier {
       }).timeout(const Duration(seconds: 5));
     } on Exception catch (e) {
       print('exception error: $e');
-      if (e.toString().contains('Future not completed')) {
+      if (e.toString().contains('Future not completed') &&
+          reconnectCounter < 5 &&
+          connected == false) {
         reconnect();
+
         if (dialogCounter < 2) {
           Method.callDialog();
           dialogCounter++;
@@ -104,8 +93,10 @@ class RpcServer extends ChangeNotifier {
           Method.EntryDialog(text: e.toString());
           dialogCounter++;
         }
-
-        reconnect();
+        if (reconnectCounter < 5 && connected == false) {
+          reconnect();
+        }
+        ;
       }
     } on Error catch (e) {
       print('error error: $e');
