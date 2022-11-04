@@ -145,7 +145,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                                         _serverUrlController.text.isEmpty) {
                                       Method.EntryDialog();
                                     }
-                                    RpcServer().getReaderLabel();
+                                    RpcServer().getDevicesInfo();
                                   },
                                   child: const Text('Senden')),
                             ],
