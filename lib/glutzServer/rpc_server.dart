@@ -14,29 +14,38 @@ class RpcServer extends ChangeNotifier {
   static const id = '/';
   var connected = false;
   var counter = 0;
+  var reconnectCounter = 0;
   var dialogCounter = 0;
   void callMethodWhenError(e) {
     print('e: $e');
     print(dialogCounter);
     if (e.toString().contains('Connection refused') ||
         e.toString().contains('TimeoutException') ||
-        e.toString().contains('Connection failed')|| connected == false ) {
+        e.toString().contains('Connection failed') ||
+        connected == false) {
       Future.delayed(const Duration(seconds: 5), (() => reconnect()));
       Method.callDialog();
       dialogCounter++;
+
       print('dialogCounter form callMethod: $dialogCounter');
     }
   }
 
- late Timer  timer;
+  late Timer timer;
   void reconnect() {
-    if (connected == false) {
-   timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-    getDevicesInfo();
-  });
-}
-    if (connected == true) {
-      timer.cancel();
+    print('connected from reconnect: $connected');
+    print('reconnectCounter: $reconnectCounter');
+    if (connected == false && reconnectCounter < 20) {
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        Future.delayed(const Duration(seconds: 5), (() {
+          getDevicesInfo();
+          reconnectCounter++;
+        }));
+        if (connected == true) {
+          timer.cancel();
+          reconnectCounter = 0;
+        }
+      });
     }
   }
 
@@ -61,34 +70,43 @@ class RpcServer extends ChangeNotifier {
         myValue = value.result as List;
         print(myValue);
         connected = true;
+        reconnectCounter = 0;
+
         print('connected: $connected');
 
-        try {
-          for (var reader in myValue) {
-            if (reader.containsValue(readerInDB)) {
-              AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
+        for (var reader in myValue) {
+          if (reader.containsValue(readerInDB)) {
+            AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
 
-              // ignore: use_build_context_synchronously
-              Navigator.pushNamed(context, '/homeScreen');
-              WebsocketServer().listenToServer();
-            }
+            // ignore: use_build_context_synchronously
+            Navigator.pushNamed(context, '/homeScreen');
+            WebsocketServer().listenToServer();
+          }
 
-            if (!reader.containsValue(readerInDB)) {
-              counter++;
-              if (myValue.length == counter) {
-                Method.EntryDialog(text: 'Reader dont exist');
-              }
+          if (!reader.containsValue(readerInDB)) {
+            counter++;
+            if (myValue.length == counter) {
+              Method.EntryDialog(text: 'Reader dont exist');
             }
           }
-        } on Exception catch (e) {
-          callMethodWhenError(e);
         }
       }).timeout(const Duration(seconds: 5));
     } on Exception catch (e) {
       print('exception error: $e');
-      callMethodWhenError(e);
+      if (e.toString().contains('Future not completed')) {
+        reconnect();
+        if (dialogCounter < 2) {
+          Method.callDialog();
+          dialogCounter++;
+        }
+      } else {
+        if (dialogCounter < 2) {
+          Method.EntryDialog(text: e.toString());
+          dialogCounter++;
+        }
 
-      callMethodWhenError(e);
+        reconnect();
+      }
     } on Error catch (e) {
       print('error error: $e');
       Method.EntryDialog(text: e.toString());
