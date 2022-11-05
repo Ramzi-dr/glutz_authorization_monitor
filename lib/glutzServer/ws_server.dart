@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/glutzServer/ws_collection.dart';
-import 'package:glutz_authorization_monitor/widget/widget_method.dart';
+import 'package:glutz_authorization_monitor/load_screen.dart';
 import 'package:web_socket_channel/io.dart';
 
 import '../main.dart';
@@ -21,41 +22,23 @@ class WebsocketServer with ChangeNotifier {
       final channel = IOWebSocketChannel.connect(Uri.parse(webSocketServerUrl));
       channel.sink.add(jsonEncode(WsCollection.data));
       final response = channel.cast();
-      response.stream.listen(
-        (event) {
-          final data = jsonDecode(event);
+      response.stream.listen((event) {
+        final data = jsonDecode(event);
 
-          if (data['method'] == 'aboutToQuit') {
-            Future.delayed(
-                const Duration(seconds: 5), (() => listenToServer()));
-            print('server Quit and we try to reconnect');
-          } else {
-            print(data);
-            if (dialogCounter > 10) {
-              Navigator.pushNamed(context, '/homeScreen');
-            }
-            dialogCounter = 0;
-          }
-        },
-        onError: (me) {
-          Future.delayed(const Duration(seconds: 5), (() => listenToServer()));
-          print('me: $me');
-          dialogCounter++;
-
-          if (me.toString().contains(
-              'WebSocketChannelException: WebSocketChannelException: SocketException:')) {
-            Future.delayed(
-                const Duration(seconds: 5), (() => listenToServer()));
-
-            if (dialogCounter == 10) {
-              Method.EntryDialog(text: me.toString());
-            }
-          }
-          ;
-        },
-      );
+        if (data['method'] == 'aboutToQuit') {
+          Future.delayed(const Duration(seconds: 5), () => listenToServer());
+          print('server Quit and we try to reconnect');
+          Navigator.pushNamed(context, '/loadingScreen');
+        } else {
+          print(data);
+          Navigator.pushReplacementNamed(context, '/homeScreen');
+        }
+      }, onError: (e) {
+        print('onError: $e');
+        Future.delayed(const Duration(seconds: 2), () => listenToServer());
+      });
     } catch (e) {
-      print('e $e');
+      print('yes: $e');
     }
   }
 }

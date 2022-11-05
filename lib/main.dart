@@ -3,6 +3,7 @@ import 'package:glutz_authorization_monitor/configuration_screen.dart';
 import 'package:glutz_authorization_monitor/glutzServer/rpc_server.dart';
 import 'package:glutz_authorization_monitor/hold_screen.dart';
 import 'package:glutz_authorization_monitor/email_screen.dart';
+import 'package:glutz_authorization_monitor/load_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'call_screen.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
             '/homeScreen': (context) => HomeScreen(),
             '/emailScreen': (context) => EmailScreen(),
             '/callScreen': (context) => CallScreen(),
+            '/loadingScreen': (context) => const LoadingScreen(),
           }),
     );
   }
