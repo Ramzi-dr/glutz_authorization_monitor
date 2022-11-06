@@ -16,11 +16,12 @@ class NavigationService {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSherdDb().init();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -37,10 +38,11 @@ class MyApp extends StatelessWidget {
           navigatorKey: NavigationService.navigatorKey,
           debugShowCheckedModeBanner: false,
           initialRoute: ('/'),
+
           routes: {
             '/': (context) => const HoldScreen(),
-            '/configurationScreen': (context) => ConfigurationScreen(),
-            '/homeScreen': (context) => HomeScreen(),
+            '/configurationScreen': (context) => const ConfigurationScreen(),
+            '/homeScreen': (context) => const HomeScreen(),
             '/emailScreen': (context) => EmailScreen(),
             '/callScreen': (context) => CallScreen(),
             '/loadingScreen': (context) => const LoadingScreen(),

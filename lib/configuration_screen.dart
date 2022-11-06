@@ -156,12 +156,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
     );
   }
 
-  void printDb() {
-    print("reader: ${AppSherdDb().dbSearchData('reader')}");
-    print("userName: ${AppSherdDb().dbSearchData('userName')}");
-    print("userPass: ${AppSherdDb().dbSearchData('userPass')}");
-    print("serverUrl: ${AppSherdDb().dbSearchData('serverUrl')}");
-  }
+ 
 
   void readerLabelInfo() {
     setState(() {

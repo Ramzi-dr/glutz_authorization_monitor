@@ -39,7 +39,6 @@ class RpcServer extends ChangeNotifier {
           if (reader.containsValue(readerInDB)) {
             AppSherdDb().dbCreateReaderDeviceId(reader['deviceid']);
             // ignore: use_build_context_synchronously
-            WebsocketServer().listenToServer();
             Navigator.pushNamed(context, '/homeScreen');
           }
           if (!reader.containsValue(readerInDB)) {

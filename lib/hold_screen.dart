@@ -24,7 +24,7 @@ class _HoldScreenState extends State<HoldScreen> {
       //RpcServer().getDevicesInfo();
       WebsocketServer().listenToServer();
 
-      return HomeScreen();
+      return const HomeScreen();
     }
   }
 }
