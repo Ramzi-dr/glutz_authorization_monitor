@@ -26,23 +26,17 @@ class WebsocketServer with ChangeNotifier {
       final response = channel.cast();
       response.stream.listen((event) {
         final data = jsonDecode(event);
-        if (homeScreenIsCurrent == false) {
+        print(data['params']);
+        if (data['method'] == 'aboutToQuit') {
+          screenMangerInError('server Quit and we try to reconnect');
+        } else if (homeScreenIsCurrent == false &&
+            data['params'] !=
+                '[DeviceUpdates, {data: {compilerError: [], systemMissing: [], timeUnsettable: [], updateNeeded: []}, event: evaluation}]') {
           Navigator.pushReplacementNamed(context, '/homeScreen');
+
           loadScreenIsCurrent = false;
           homeScreenIsCurrent = true;
         }
-        
-         if (data['method'] == 'aboutToQuit') {
-          print('server Quit and we try to reconnect');
-
-          screenMangerInError('server Quit and we try to reconnect');
-        }
-          else if (homeScreenIsCurrent == false) {
-                Navigator.pushReplacementNamed(context, '/homeScreen');
-
-            loadScreenIsCurrent = false;
-            homeScreenIsCurrent = true;
-          }
       }, onError: (e) {
         print('onError: $e');
 
