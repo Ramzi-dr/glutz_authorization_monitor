@@ -26,32 +26,23 @@ class WebsocketServer with ChangeNotifier {
       final response = channel.cast();
       response.stream.listen((event) {
         final data = jsonDecode(event);
-        if (homeScreenIsCurrent = false) {
+        if (homeScreenIsCurrent == false) {
           Navigator.pushReplacementNamed(context, '/homeScreen');
           loadScreenIsCurrent = false;
           homeScreenIsCurrent = true;
         }
-        if (data['method'] == 'aboutToQuit') {
-          print('server Quit and we try to reconnect');
-          listenToServer();
-        }
-        print('ggg');
-
-        /* if (data['method'] == 'aboutToQuit') {
+        
+         if (data['method'] == 'aboutToQuit') {
           print('server Quit and we try to reconnect');
 
           screenMangerInError('server Quit and we try to reconnect');
         }
-         if (data['method'] != 'aboutToQuit') {
-          print(data);
-          print('from: $homeScreenIsCurrent');
-          if (homeScreenIsCurrent == false) {
+          else if (homeScreenIsCurrent == false) {
                 Navigator.pushReplacementNamed(context, '/homeScreen');
 
             loadScreenIsCurrent = false;
             homeScreenIsCurrent = true;
           }
-        }*/
       }, onError: (e) {
         print('onError: $e');
 
