@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
 import 'package:glutz_authorization_monitor/glutzServer/ws_collection.dart';
-import 'package:glutz_authorization_monitor/hold_screen.dart';
 import 'package:glutz_authorization_monitor/load_screen.dart';
 import 'package:web_socket_channel/io.dart';
 import '../main.dart';
@@ -27,8 +26,18 @@ class WebsocketServer with ChangeNotifier {
       final response = channel.cast();
       response.stream.listen((event) {
         final data = jsonDecode(event);
-
+        if (homeScreenIsCurrent = false) {
+          Navigator.pushReplacementNamed(context, '/homeScreen');
+          loadScreenIsCurrent = false;
+          homeScreenIsCurrent = true;
+        }
         if (data['method'] == 'aboutToQuit') {
+          print('server Quit and we try to reconnect');
+          listenToServer();
+        }
+        print('ggg');
+
+        /* if (data['method'] == 'aboutToQuit') {
           print('server Quit and we try to reconnect');
 
           screenMangerInError('server Quit and we try to reconnect');
@@ -42,7 +51,7 @@ class WebsocketServer with ChangeNotifier {
             loadScreenIsCurrent = false;
             homeScreenIsCurrent = true;
           }
-        }
+        }*/
       }, onError: (e) {
         print('onError: $e');
 
@@ -56,7 +65,8 @@ class WebsocketServer with ChangeNotifier {
 
   void screenMangerInError(title) {
     if (loadScreenIsCurrent == false) {
-      Navigator.of(context).pushReplacementNamed('/loadingScreen',arguments: LoadingScreen(title));
+      Navigator.of(context).pushReplacementNamed('/loadingScreen',
+          arguments: LoadingScreen(title));
       loadScreenIsCurrent = true;
       homeScreenIsCurrent = false;
     }
