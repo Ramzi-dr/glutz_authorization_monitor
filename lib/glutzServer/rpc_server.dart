@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:glutz_authorization_monitor/app_db.dart';
-import 'package:glutz_authorization_monitor/glutzServer/ws_server.dart';
 import 'package:glutz_authorization_monitor/widget/widget_method.dart';
 import 'package:json_rpc_client/json_rpc_client.dart';
 import '../main.dart';
@@ -48,7 +47,9 @@ class RpcServer extends ChangeNotifier {
             }
           }
         }
-      }).timeout(const Duration(seconds: 5));
+      }).timeout(const Duration(seconds: 5), onTimeout: () {
+        print('timeout');
+      });
     } on Exception catch (e) {
       if (e.toString().contains('Future not completed') && dialogCounter < 1) {
         Method.callDialog();
